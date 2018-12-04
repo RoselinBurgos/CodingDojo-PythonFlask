@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title>Simple Wall</title>
+  </head>
+
+  <style>
+        body
+        {
+          background-color: ghostwhite;
+        }
+
+    .ptop
+    {
+      color: white;
+
+    }
+
+    .rightside
+    {
+      display: inline-block;
+      
+      width: 40%;
+      height: 400px;
+      padding-top: 25px;
+      padding-left: 40px;
+    }
+
+    .leftside
+    {
+      display: inline-block;
+      
+      width: 40%;
+      height: 400px;
+      vertical-align: top;
+      padding-left: 40px;
+      padding-top: 25px;
+    }
+
+    .rightsend
+    {
+      width: 300px;
+      height: 100px;
+    }
+
+    .trashcan
+    {
+      background-image: url('{{ url_for('static', filename='trashcan.png') }}');
+      background-position: center;
+      background-size: cover;
+      width: 20px;
+      height: 30px;
+      
+    }
+
+
+
+  </style>
+
+
+
+  <body>
+      <nav class="navbar navbar-dark bg-dark">
+          <a class="navbar-brand" href="#">
+            <img src="/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+            Dojo Wall
+          </a>
+          <div class="right_align_nav">
+              <span class="navbar-text text-white ml-auto">
+                      Welcome {{session['first_name'].title()}}!
+                  </span>
+              
+              <a href="/logout"><button class="btn btn-outline-light ml-3" type="button">logout</button></a>
+          </div>
+          
+      </nav>
+
+      <div class = "leftside">
+
+        <h3><u> {{messages|length}} Messages for you {{session['first_name']}}</u></h3>
+        <br>
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Date and Time</th>
+                    <th scope="col">Message</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  {% for message in messages%}
+                    <tr>                             
+                      <td>{{message.first_name}}</td>
+                      <td>{{message['created_at'].strftime('%m/%d/%Y %I:%M %p')}}</td>
+                      <td>{{message.message}}</td>
+                      <td><a href ="/delete_message/{{message['id']}}"><button class ="trashcan" type="button"></button></a></td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+              </table>
+
+      </div>
+
+
+      <div class = "rightside">
+
+          <h3><u>Send a message.</u><h3>
+          <h5>You have a total of {{session['sent_msg_cnt']}} messages so far.</h5>
+
+              <table class="table table-striped">
+                  <thead>
+                   
+                    <tr>
+                      <th scope="col">Name</th>
+                      <th scope="col">Message</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                    
+                  </thead>
+                  <tbody>
+                    {% for messages in send_check%}
+                    <form action="/send_message"method='post'>
+                    <tr>
+                      <th scope="row">{{messages.first_name}}</th>
+                      <td><textarea class="form-control" id="message" rows="2"  name='message'></textarea></td>
+                      <td><button type="submit" class="btn btn-outline-primary send_btn" name="button" value="{{messages['id']}}">Send</button></p></td>
+                    
+                    </tr>
+                    </form>
+                    {% endfor %}
+                  </tbody>
+                </table> 
+  
+        </div>
+
+        
+
+
+
+      </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  </body>
+</html>
